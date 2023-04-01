@@ -43,3 +43,6 @@ def bruteTime():
 estTime, tick = bruteTime()
 print(calcTickTime(estTime, 0.22, tick, 0.05, 30))
 
+
+#print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
+
