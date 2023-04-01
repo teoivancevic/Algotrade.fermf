@@ -39,4 +39,4 @@ def bruteTime():
         time.sleep(0.22)
 
 
-print(calcTickTime(bruteTime(), 0.2, 0.005, 30))
+print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))

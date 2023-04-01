@@ -12,7 +12,14 @@ class ApiService:
 
     def getTime(self):
         response = requests.get(self.url + "/getTime")
+        while(response.status_code == 429):
+            response = requests.get(self.url + "/getTime")
+        
         return response.json()
+
+
+        
+        
 
     def getAllPairs(self):
         response = requests.get(self.url + "/getAllPairs")
