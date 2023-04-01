@@ -178,7 +178,7 @@ bool cmp(int a, int b){
 	return (double)volume[a]/close[a]>(double)volume[b]/close[b];
 }
 
-void bellman_ford(int x){
+bool bellman_ford(int x){
 	ciklus.clear();
 	cik_edge.clear();
 	sort(red.begin(), red.end(), cmp);
@@ -200,7 +200,9 @@ void bellman_ford(int x){
 			break;
 		}
 	}
-//	assert(anc[x].first!=-1);
+	if(anc[x].first==-1){
+		return 0;
+	}
 	for(int i=0; i<n; i++){
 		x=anc[x].first;
 	}
@@ -218,6 +220,7 @@ void bellman_ford(int x){
 		cout << i << ' ';
 	}
 	cout << '\n';*/
+	return 1;
 }
 
 string rev[maxn];
@@ -335,7 +338,9 @@ int main(){
 	}
 	ll value=0;
 	while(value<=0){
-		bellman_ford(rand()%n);
+		if(!bellman_ford(rand()%n)){
+			continue;
+		}
 		value=update();
 	}
 	for(auto it : ind){
