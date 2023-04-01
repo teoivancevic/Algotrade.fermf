@@ -19,8 +19,11 @@ def find(i, j):
             return k
     return -1
 
-def get_min_vol(i, j, k):
-    return min(vol_mat[node[i]][node[j]], vol_mat[node[j]][node[k]], vol_mat[node[k]][node[i]]);
+def get_min_vol(i, j, k, eij, ejk, eki):
+    first = vol_mat[node[i]][node[j]]
+    second = int(min(vol_mat[node[j]][node[k]], first * eij))
+    third = int(min(vol_mat[node[k]][node[i]], second * ejk))
+    return min(first, second, third)
 
 print('bal na pocetku: ', api.balance(user)['USDT'] / 1e8)
 
@@ -61,13 +64,22 @@ for i in range(5, 6):
                 eij = graph[node[i]][eij][1] / 1e8
                 ejk = graph[node[j]][ejk][1] / 1e8
                 eki = graph[node[k]][eki][1] / 1e8
-                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k) > 0:
-                    print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k) / 1e8 )
-                    trade_vol = get_min_vol(i, j, k) * 2 / 3
+                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) > 0:
+                    print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
+
+                    trade_vol = int(get_min_vol(i, j, k, eij, ejk, eki) * 2 / 3)
+                    print(trade_vol, vol_mat[node[i]][node[j]])
+
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
+                    trade_vol = int(trade_vol * eij)
+                    print('asdfasdfasdfsd', trade_vol)
+
                     url = url + '|' + node[j] + ',' + node[k] + ',' + str(trade_vol)
+                    trade_vol = int(trade_vol * ejk)
                     url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
+                    print(url)
                     print(api.createOrders(user, secret, url))
+                    exit(0)
 
 
 print(api.balance(user)['USDT'] / 1e8)
