@@ -21,9 +21,9 @@ def find(i, j):
 
 def get_min_vol(i, j, k, eij, ejk, eki):
     first = vol_mat[node[i]][node[j]]
-    second = int(min(vol_mat[node[j]][node[k]], first * eij))
-    third = int(min(vol_mat[node[k]][node[i]], second * ejk))
-    return min(first, second, third)
+    second = vol_mat[node[j]][node[k]] / eij
+    third = vol_mat[node[k]][node[i]] / ejk / eki
+    return int(min(first, second, third))
 
 print('bal na pocetku: ', api.balance(user)['USDT'] / 1e8)
 
@@ -68,11 +68,11 @@ for i in range(5, 6):
                     print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
 
                     trade_vol = int(get_min_vol(i, j, k, eij, ejk, eki) * 2 / 3)
-                    print(trade_vol, vol_mat[node[i]][node[j]])
+                    print('trade_vol_nacpo[cetaku', trade_vol)
 
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * eij)
-                    print('asdfasdfasdfsd', trade_vol)
+                    print('trade_vol_drugitrade', trade_vol)
 
                     url = url + '|' + node[j] + ',' + node[k] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * ejk)
