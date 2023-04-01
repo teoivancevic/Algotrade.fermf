@@ -1,3 +1,5 @@
+import sys
+
 from Services.ApiService import ApiService
 from Services.bcolors import bcolors
 
@@ -10,8 +12,8 @@ vol_graph = {}
 vol_mat = {}
 e_mat = {}
 
-user='fermf_test3'
-secret='36745afeb9d66142a552bed528f12c42'
+user = sys.argv[1]
+secret = sys.argv[2]
 
 
 def find(i, j):
