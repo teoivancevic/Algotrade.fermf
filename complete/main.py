@@ -18,10 +18,7 @@ class CalcTimeThread(Thread):
         self.value = None
  
     def run(self):
-        if(isFirstRun):
-            self.value = calcStartTime()
-        else:
-            time.sleep(tickLength)
+        self.value = calcStartTime()
 
 '''
 class TradingThread(Thread):
@@ -42,49 +39,34 @@ class TickDelayThread(Thread):
         time.sleep(30)
 '''
 
+def printTickEnd():
+    print(bcolors.OKCYAN + bcolors.BOLD + "Thread run done :)" + bcolors.ENDC)
+
 
 try:
 
+    timeThread = CalcTimeThread()
+    timeThread.start()
+    subprocess.run(["python3", "graphSabolic.py"])
+
+    
+    timeThread.join()
+
+    printTickEnd()
 
     while True:
-        if(isFirstRun):
-            timeThread = CalcTimeThread()#Thread(target = calcStartTime())
-            #tradingThread = TradingThread()
-            subprocess.run(["python3", "graphSabolic.py"])
+        timeThread2 = CalcTimeThread()
+        timeThread2.start()
+        subprocess.run(["python3", "graphSabolic.py"])
+        
+        isFirstRun = False
+        
 
+        #timeThread2.start()
+        timeThread2.join()
 
-            #starts threads
-            #tradingThread.start()
-            timeThread.start()
-
-            # waits for thread end
-            #tradingThread.join()
-            timeThread.join()
-            subprocess.run(["python3", "graphSabolic.py"])
-
-            #data = timeThread.value
-            #print(data)
-
-            isFirstRun = False
-
-        else:
-            print("inside else block")
-            #timeThread2 = TickDelayThread()
-            timeThread2 = CalcTimeThread()
-            subprocess.run(["python3", "graphSabolic.py"])
-
-            #tradingThread = TradingThread()
-
-
-            #tradingThread.start()
-            timeThread2.start()
-
-
-            #tradingThread.join()
-            timeThread2.join()
-            subprocess.run(["python3", "graphSabolic.py"])
-
-        print(bcolors.OKCYAN + bcolors.BOLD + "Thread run done :)" + bcolors.ENDC)
+        printTickEnd()
+        
 
 except:
     print("error")

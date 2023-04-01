@@ -2,14 +2,16 @@ from Services.ApiService import ApiService
 
 
 class InfoService:
+    def __init__(self, base_url):
+        self.url = base_url
 
     def getSpecificBalance(self, user, crypto):
-        api = ApiService("http://192.168.1.101:3000")
+        api = ApiService(self.url)
         balances = api.balance(user)
         return balances[crypto]
 
     def allToUSDT(self, user, secret):
-        api = ApiService("http://192.168.1.101:3000")
+        api = ApiService(self.url)
         balances = api.balance(user)
         for line in balances:
             if(balances[line] !=0 and line != "USDT"):

@@ -69,7 +69,7 @@ for i in range(5, 6):
                 if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) > 0.008:
                     #print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
                     print('vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8)
-                    print('bal: ', api.balance(user)['USDT'] / 1e8)
+                    #print('bal: ', api.balance(user)['USDT'] / 1e8)
 
                     trade_vol = min(int(get_min_vol(i, j, k, eij, ejk, eki) / eij * 9 / 10), int(int(api.balance(user)['USDT']) * 9 / 10))
                     #print('trade_vol_nacpo[cetaku', trade_vol, vol_mat[node[i]][node[j]])
@@ -83,7 +83,7 @@ for i in range(5, 6):
                     url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
                     print(url)
                     print(api.createOrders(user, secret, url))
-                    print('bal: ', api.balance(user)['USDT'] / 1e8)
+                    #print('bal: ', api.balance(user)['USDT'] / 1e8)
                     print('------')
                     #exit(0)
 
