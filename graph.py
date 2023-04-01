@@ -72,11 +72,11 @@ for i in range(5, 6):
 
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * eij)
-                    print('asdfasdfasdfsd', trade_vol)
+                    print('asdfasdfasdfsd', trade_vol, eij, ejk, eki)
 
                     url = url + '|' + node[j] + ',' + node[k] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * ejk)
-                    url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
+                    #url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
                     print(url)
                     print(api.createOrders(user, secret, url))
                     exit(0)

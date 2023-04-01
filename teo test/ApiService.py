@@ -30,15 +30,15 @@ class ApiService:
         return response.json()
     
     def createOrders(self, user, secret, orders):
-        response = requests.post(self.url + "/createOrders/" + user + "/" + secret + "/" + orders)
+        response = requests.get(self.url + "/createOrders/" + user + "/" + secret + "/" + orders)
         return response.json()
 
     def register(self, user):
-        response = requests.post(self.url + "/register/" + user)
+        response = requests.get(self.url + "/register/" + user)
         return response.json()
 
     def resetBalance(self, user, secret):
-        response = requests.post(self.url + "/resetBalance/" + user + "/" + secret)
+        response = requests.get(self.url + "/resetBalance/" + user + "/" + secret)
         return response.json()
     
     def balance(self, user):
