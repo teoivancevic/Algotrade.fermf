@@ -47,9 +47,9 @@ class ApiService:
         return response.json()
 
     def getAllBalancesCondensed(self, secret):
-        response = requests.get(self.url + "/getAllBalancesCondensed", params = secret)
+        response = requests.get(self.url + "/getAllBalancesCondensed" + "?secret=" + secret)
         return response.json()
 
     def getIPsAndWrongRequests(self, secret):
-        response = requests.get(self.url + "/getIPsAndWrongRequests", params = secret)
+        response = requests.get(self.url + "/getIPsAndWrongRequests" + "?secret=" + secret)
         return response.json()    
