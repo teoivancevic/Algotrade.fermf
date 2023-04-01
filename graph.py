@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append('teo test/')
+
 from ApiService import ApiService
 api = ApiService('http://192.168.1.101:3000')
 
@@ -6,6 +10,8 @@ graph = {}
 node = []
 vol_graph = {}
 vol_mat = {}
+user='fermf'
+secret='1349d0f368babe13344db67d0c815bbb'
 
 def find(i, j):
     for k in range(len(graph[node[i]])):
@@ -16,6 +22,7 @@ def find(i, j):
 def get_min_vol(i, j, k):
     return min(vol_mat[node[i]][node[j]], vol_mat[node[j]][node[k]], vol_mat[node[k]][node[i]]);
 
+print('bal na pocetku: ', api.balance(user)['USDT'] / 1e8)
 
 for key in data:
     if key.startswith('close') == True:
@@ -57,5 +64,10 @@ for i in range(5, 6):
                 if eij * ejk * eki > 1.001 and get_min_vol(i, j, k) > 0:
                     print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k) / 1e8 )
                     trade_vol = get_min_vol(i, j, k) * 2 / 3
+                    url = node[i] + ',' + node[j] + ',' + str(trade_vol)
+                    url = url + '|' + node[j] + ',' + node[k] + ',' + str(trade_vol)
+                    url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
+                    print(api.createOrders(user, secret, url))
 
 
+print(api.balance(user)['USDT'] / 1e8)
