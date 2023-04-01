@@ -10,6 +10,7 @@ graph = {}
 node = []
 vol_graph = {}
 vol_mat = {}
+e_mat = {}
 user='fermf'
 secret='1349d0f368babe13344db67d0c815bbb'
 
@@ -53,26 +54,43 @@ for key in vol_graph:
         vol_mat[key][x[0]] = x[1]
 
 for key in graph:
+    e_mat[key] = {}
+    for x in graph[key]:
+        e_mat[key][x[0]] = x[1]
+
+for key in graph:
     node.append(key)
 print(node.index('USDT'))
 
 for i in range(5, 6):
     for j in range(len(node)):
         for k in range(len(node)):
-            eij = find(i, j)
-            ejk = find(j, k)
-            eki = find(k, i)
-            if eij != -1 and ejk != -1 and eki != -1:
-                eij = graph[node[i]][eij][1] / 1e8
-                ejk = graph[node[j]][ejk][1] / 1e8
-                eki = graph[node[k]][eki][1] / 1e8
-                
-                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) > 0.008:
+            if j == k:
+                continue
+
+            if node[j] in e_mat[node[i]] and node[k] in e_mat[node[j]] and node[i] in e_mat[node[k]]:
+                #eij = graph[node[i]][eij][1] / 1e8
+                #ejk = graph[node[j]][ejk][1] / 1e8
+                #eki = graph[node[k]][eki][1] / 1e8
+                eij = e_mat[node[i]][node[j]] / 1e8
+                ejk = e_mat[node[j]][node[k]] / 1e8
+                eki = e_mat[node[k]][node[i]] / 1e8
+                #print(eij* ejk* eki)
+
+                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) / 1e8 > 0.002:
+                    print("uso")
                     #print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
-                    print('vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8)
-                    print('bal: ', api.balance(user)['USDT'] / 1e8)
+
+                    #if get_min_vol(i, j, k, eij, ejk, eki) / 1e8 > 20:
+                    print(node[i], '->', node[j], eij, vol_mat[node[i]][node[j]] / 1e8)
+                    print(node[j], '->', node[k], ejk, vol_mat[node[j]][node[k]] / 1e8)
+                    print(node[k], '->', node[i], eki, vol_mat[node[k]][node[i]] / 1e8)
 
                     trade_vol = min(int(get_min_vol(i, j, k, eij, ejk, eki) / eij * 9 / 10), int(int(api.balance(user)['USDT']) * 9 / 10))
+                    print('vol: ', trade_vol / 1e8)
+
+                    trade_vol = int(trade_vol)
+                    print('bal: ', api.balance(user)['USDT'] / 1e8, 'est_new_bal: ', trade_vol / 1e8 * eij * ejk * eki) 
                     #print('trade_vol_nacpo[cetaku', trade_vol, vol_mat[node[i]][node[j]])
 
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
