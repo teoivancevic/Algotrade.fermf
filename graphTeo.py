@@ -1,6 +1,11 @@
-from Services.ApiService import ApiService
-from Services.InfoService import InfoService
-from Services.bcolors import bcolors
+import sys
+
+sys.path.append('Services/')
+
+from ApiService import ApiService
+from InfoService import InfoService
+from bcolors import bcolors
+
 api = ApiService('http://192.168.1.101:3000')
 
 data = api.getAllPairs()
@@ -69,22 +74,28 @@ for i in range(5, 6):
                     min_vol = min(vol_mat[node[i]][node[j]], vol_mat[node[j]][node[k]], vol_mat[node[k]][node[i]])
                     print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', min_vol)
                     
-                    if(min_vol != 0):
-                        vol1 = 100 * (10**8)
-                        orderString1 = node[i] + "," + node[j] + "," + str(vol1)
-                        api.createOrders(user, secret, orderString1)
+                    #if(min_vol != 0):
+                    vol1 = 1 * (10**8)
+                    orderString1 = node[i] + "," + node[j] + "," + str(vol1)
+                    response = api.createOrders(user, secret, orderString1)
+                    print("\t" + str(response))
 
-                        vol2 = info.getSpecificBalance(user, node[j])
-                        #if(vol2 > 0):
-                        orderString2 = node[j] + "," + node[k] + "," + str(vol2)
-                        api.createOrders(user, secret, orderString2)
-                            
-                        vol3 = info.getSpecificBalance(user, node[k])
-                        #    if(vol3 > 0):
-                        orderString3 = node[k] + "," + node[i] + "," + str(vol3)
+                    vol2 = info.getSpecificBalance(user, node[j])
+                    #if(vol2 > 0):
+                    orderString2 = node[j] + "," + node[k] + "," + str(vol2)
+                    response = api.createOrders(user, secret, orderString2)
+                    print("\t" + str(response))
+                        
+                    vol3 = info.getSpecificBalance(user, node[k])
+                    #    if(vol3 > 0):
+                    orderString3 = node[k] + "," + node[i] + "," + str(vol3)
+                    response = api.createOrders(user, secret, orderString3)
+                    print("\t" + str(response))
 
-                        currUSDT = info.getSpecificBalance(user, "USDT")
-                        print("Current USDT: " + str(currUSDT))
+
+                    currUSDT = info.getSpecificBalance(user, "USDT")
+                    print("Current USDT: " + str(currUSDT))
+                    print()
                     
                     
 

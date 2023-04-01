@@ -9,6 +9,7 @@ info = InfoService()
 
 print(bcolors.OKCYAN +  "USDT before: " + bcolors.BOLD +  str((info.getSpecificBalance(user, "USDT"))/(10**8)) + bcolors.ENDC)
 
-info.allToUSDT(user, secret)
+response = info.allToUSDT(user, secret)
+print(str(response))
 
 print(bcolors.OKCYAN +  "USDT after: " + bcolors.BOLD +  str((info.getSpecificBalance(user, "USDT"))/(10**8)) + bcolors.ENDC)
