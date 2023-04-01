@@ -23,9 +23,9 @@ def getBal(user):
         print(nbalances["USDT"])
         if (nbalances["USDT"] != balances["USDT"]):
             with open(f"{user}.balances1.txt", "w") as f:
-                f.write(balancesreq.text)
+                f.write(str(balancesreq))
             with open(f"{user}.balances2.txt", "w") as f:
-                f.write(nbalancesreq.text)
+                f.write(str(nbalancesreq))
 
 
 getBal("stackforces")
