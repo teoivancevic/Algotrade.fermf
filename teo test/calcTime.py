@@ -16,11 +16,10 @@ balances = _api.balance(user)
 
 #print("form api: " + str(_api.getAllBalances(secret)))
 
-def calcTickTime(estimatedTime, curPrec, prec = 0.05, timeDelta = 3.):
+def calcTickTime(estimatedTime, curPrec, curTick, prec = 0.05, timeDelta = 3.):
     if (curPrec < prec): return estimatedTime
     curTime = time.time()
     time.sleep(estimatedTime - curPrec + timeDelta - curTime - 0.0001)
-    curTick = _api.getTime()
     tickChanged = False
     tick = curTick
     tickdeltacalc = curPrec * 0.22
@@ -32,11 +31,18 @@ def calcTickTime(estimatedTime, curPrec, prec = 0.05, timeDelta = 3.):
 
 def bruteTime():
     curTick = _api.getTime()
+    time.sleep(0.22)
+    tick = curTick
     while True:
         tick = _api.getTime()
+        print(time.time(), tick, curTick)
         if (tick != curTick):
-            return time.time()
+            return time.time(), tick
         time.sleep(0.22)
 
+estTime, tick = bruteTime()
+print(calcTickTime(estTime, 0.22, tick, 0.05, 30))
 
-print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
+
+#print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
+
