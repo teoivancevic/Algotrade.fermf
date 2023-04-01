@@ -24,10 +24,7 @@ def calcTickTime(estimatedTime, curPrec, curTick, prec = 0.05, timeDelta = 3.):
     tick = curTick
     tickdeltacalc = curPrec * 0.22
     while True:
-        ptime = time.time()
         tick = _api.getTime()
-
-        print(ptime, tick, curTick)
         if (tick != curTick):
             return calcTickTime(time.time(), tickdeltacalc, prec, timeDelta)
         time.sleep(tickdeltacalc)
@@ -37,10 +34,7 @@ def bruteTime():
     time.sleep(0.22)
     tick = curTick
     while True:
-        ptime = time.time()
         tick = _api.getTime()
-
-        print(ptime, tick, curTick)
         if (tick != curTick):
             return time.time(), tick
         time.sleep(0.22)
@@ -49,6 +43,10 @@ def bruteTime():
 def calcStartTime():
     esttime, tick = bruteTime()
     return calcTickTime(esttime, 0.22, tick, 0.25, 30)
+
+
+if __name__ == "__main__":
+    print(calcStartTime())
 
 
 #print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
