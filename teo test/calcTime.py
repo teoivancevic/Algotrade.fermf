@@ -19,12 +19,13 @@ balances = _api.balance(user)
 def calcTickTime(estimatedTime, curPrec, curTick, prec = 0.05, timeDelta = 3.):
     if (curPrec < prec): return estimatedTime
     curTime = time.time()
-    time.sleep(estimatedTime - curPrec + timeDelta - curTime - 0.0001)
+    time.sleep(estimatedTime - curPrec + timeDelta - curTime - 0.005)
     tickChanged = False
     tick = curTick
     tickdeltacalc = curPrec * 0.22
     while True:
         tick = _api.getTime()
+        print(datetime.fromtimestamp(time.time()), tick, curTick)
         if (tick != curTick):
             return calcTickTime(time.time(), tickdeltacalc, prec, timeDelta)
         time.sleep(tickdeltacalc)
@@ -35,13 +36,13 @@ def bruteTime():
     tick = curTick
     while True:
         tick = _api.getTime()
-        print(time.time(), tick, curTick)
+        print(datetime.fromtimestamp(time.time()), tick, curTick)
         if (tick != curTick):
             return time.time(), tick
         time.sleep(0.22)
 
 estTime, tick = bruteTime()
-print(calcTickTime(estTime, 0.22, tick, 0.05, 30))
+print(datetime.fromtimestamp(calcTickTime(estTime, 0.22, tick, 0.05, 30)))
 
 
 #print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
