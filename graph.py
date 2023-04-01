@@ -13,6 +13,7 @@ vol_mat = {}
 user='fermf'
 secret='1349d0f368babe13344db67d0c815bbb'
 
+
 def find(i, j):
     for k in range(len(graph[node[i]])):
         if graph[node[i]][k][0] == node[j]:
@@ -20,10 +21,11 @@ def find(i, j):
     return -1
 
 def get_min_vol(i, j, k, eij, ejk, eki):
-    first = vol_mat[node[i]][node[j]]
-    second = int(min(vol_mat[node[j]][node[k]], first * eij))
-    third = int(min(vol_mat[node[k]][node[i]], second * ejk))
-    return min(first, second, third)
+    first = vol_mat[node[i]][node[j]] 
+    second = min(first * eij, vol_mat[node[j]][node[k]])
+    third = min(second * ejk, vol_mat[node[k]][node[i]])
+    return int(min(first, second / ejk, third / eki / ejk))
+
 
 print('bal na pocetku: ', api.balance(user)['USDT'] / 1e8)
 
@@ -64,22 +66,28 @@ for i in range(5, 6):
                 eij = graph[node[i]][eij][1] / 1e8
                 ejk = graph[node[j]][ejk][1] / 1e8
                 eki = graph[node[k]][eki][1] / 1e8
-                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) > 0:
-                    print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
+                
+                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) > 0.008:
+                    #print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8 )
+                    print('vol: ', get_min_vol(i, j, k, eij, ejk, eki) / 1e8)
+                    print('bal: ', api.balance(user)['USDT'] / 1e8)
 
-                    trade_vol = int(get_min_vol(i, j, k, eij, ejk, eki) * 2 / 3)
-                    print(trade_vol, vol_mat[node[i]][node[j]])
+                    trade_vol = min(int(get_min_vol(i, j, k, eij, ejk, eki) / eij * 9 / 10), int(int(api.balance(user)['USDT']) * 9 / 10))
+                    #print('trade_vol_nacpo[cetaku', trade_vol, vol_mat[node[i]][node[j]])
 
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * eij)
-                    print('asdfasdfasdfsd', trade_vol, eij, ejk, eki)
+                    #print('trade_vol_drugitrade', trade_vol)
 
                     url = url + '|' + node[j] + ',' + node[k] + ',' + str(trade_vol)
                     trade_vol = int(trade_vol * ejk)
-                    #url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
+                    url = url + '|' + node[k] + ',' + node[i] + ',' + str(trade_vol)
                     print(url)
                     print(api.createOrders(user, secret, url))
-                    exit(0)
+                    print('bal: ', api.balance(user)['USDT'] / 1e8)
+                    print('------')
+                    #exit(0)
+
 
 
 print(api.balance(user)['USDT'] / 1e8)
