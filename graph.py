@@ -13,6 +13,9 @@ def find(i, j):
             return k
     return -1
 
+def get_min_vol(i, j, k):
+    return min(vol_mat[node[i]][node[j]], vol_mat[node[j]][node[k]], vol_mat[node[k]][node[i]]);
+
 
 for key in data:
     if key.startswith('close') == True:
@@ -51,7 +54,8 @@ for i in range(5, 6):
                 eij = graph[node[i]][eij][1] / 1e8
                 ejk = graph[node[j]][ejk][1] / 1e8
                 eki = graph[node[k]][eki][1] / 1e8
-                if eij * ejk * eki > 1.001:
-                    print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', min(vol_graph[node[i]][node[j]], vol_graph[node[j]][node[k]], vol_graph[node[k]][node[i]]))
+                if eij * ejk * eki > 1.001 and get_min_vol(i, j, k) > 0:
+                    print('naso ciklus: ' + node[i] + ' ' + node[j] + ' ' + node[k] + ' omjer: ', eij * ejk * eki, 'vol: ', get_min_vol(i, j, k) / 1e8 )
+                    trade_vol = get_min_vol(i, j, k) * 2 / 3
 
 
