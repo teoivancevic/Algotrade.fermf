@@ -48,67 +48,74 @@ def printTickEnd():
     print(bcolors.OKCYAN + bcolors.BOLD + "Thread run done :)" + bcolors.ENDC)
 
 
-try:
+#try:
 
-    timeThread = CalcTimeThread()
-    timeThread.start()
+timeThread = CalcTimeThread()
+timeThread.start()
 
-    #subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
+#subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
 
-    generateAllPairsJsonFile() # ToDo zamijenit s boljim nacinom
-    url = "http://192.168.1.101:3000"
-    api = ApiService(url)
+generateAllPairsJsonFile() # ToDo zamijenit s boljim nacinom
+url = "http://192.168.1.101:3000"
+api = ApiService(url)
 
-    pairsJson = api.getAllPairs()
-    #print(pairsJson)
-    print("a")
-    prettyJson = json.dumps(pairsJson, indent=4)# ovo je tocno
-    #print(prettyJson)
+pairsJson = api.getAllPairs()
+#print(pairsJson)
+print("a")
+prettyJson = json.dumps(pairsJson, indent=4) # ovo je tocno
+#print(prettyJson)
 
-    program_path = "./bellman"
+program_path = "./bellman"
 
-    cppFile = Popen([program_path], stdout=PIPE, stdin=PIPE)
+cppFile = Popen([program_path], stdout=PIPE, stdin=PIPE)
+cppFile.comm
+cppFile.stdin.write(bytes(prettyJson, "utf-8"))
+cppFile.stdin.flush()
+
+'''
+for line in prettyJson:
+    cppFile.stdin.write(bytes(line + '\n', "utf-8"))
+'''
+print("bbb")
+
+trades = cppFile.stdout.readline().strip().decode("utf-8")#.strip().split("|")
+print("All trades: " + trades)
+#pritn(trades)
+#print("test 3")
+for trade in trades:
+
+    print("Trade: " + trade)
+
+print("test 4")
+
+
+
+
+
+timeThread.join()
+
+printTickEnd()
+
+while True:
+    timeThread2 = CalcTimeThread()
+    timeThread2.start()
     
-    for line in prettyJson:
-        cppFile.stdin.write(line + '\n')
-
-    trades = cppFile.stdout.readline().strip().split("|")
-    #pritn(trades)
-    #print("test 3")
-    for trade in trades:
-
-        print("Trade: " + trade)
-
-    print("test 4")
+    #subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
+    
 
 
 
+    
+    isFirstRun = False
+    
 
-
-    timeThread.join()
+    #timeThread2.start()
+    timeThread2.join()
 
     printTickEnd()
+    
 
-    while True:
-        timeThread2 = CalcTimeThread()
-        timeThread2.start()
-        
-        #subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
-        
-
-
-
-        
-        isFirstRun = False
-        
-
-        #timeThread2.start()
-        timeThread2.join()
-
-        printTickEnd()
-        
-
-except:
-    print("error")
+#except:
+print("error")
 
 #print(calcStartTime())

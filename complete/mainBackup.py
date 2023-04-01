@@ -13,8 +13,18 @@ from Services.ApiService import ApiService
 import time
 
 
+user = "fermf"
+secret = "2409877abc689bb3c40371f391000479"
+
+'''
+url = "http://192.168.1.101:3000"
+api = ApiService(url)
+secret = api.register(user)['secret']
+print(secret)
+'''
+
 isFirstRun = True
-tickLength = 30 # In seconds
+tickLength = 3 # In seconds
 
 
 class CalcTimeThread(Thread):
@@ -53,7 +63,7 @@ try:
     timeThread = CalcTimeThread()
     timeThread.start()
 
-    subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
+    subprocess.run(["python3", "graphSabolicV2.py", user, secret]) # backup sabolicev
 
     timeThread.join()
 
@@ -63,7 +73,7 @@ try:
         timeThread2 = CalcTimeThread()
         timeThread2.start()
         
-        subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
+        subprocess.run(["python3", "graphSabolicV2.py", user, secret]) # backup sabolicev
         
         isFirstRun = False
         

@@ -1,3 +1,5 @@
+import sys
+
 from Services.ApiService import ApiService
 from Services.bcolors import bcolors
 
@@ -10,8 +12,8 @@ vol_graph = {}
 vol_mat = {}
 e_mat = {}
 
-user='fermf_test3'
-secret='36745afeb9d66142a552bed528f12c42'
+user = sys.argv[1]
+secret = sys.argv[2]
 
 
 def find(i, j):
@@ -36,7 +38,7 @@ for key in data:
 
         if not (node1 in graph):
             graph[node1] = []
-        graph[node1].append((node2, data[key]));
+        graph[node1].append((node2, data[key]))
 
     if key.startswith('vol') == True:
         node1 = key.split('_')[1].split(',')[0]
@@ -44,7 +46,7 @@ for key in data:
 
         if not (node1 in vol_graph):
             vol_graph[node1] = []
-        vol_graph[node1].append((node2, data[key]));
+        vol_graph[node1].append((node2, data[key]))
 
 
 for key in vol_graph:
@@ -61,7 +63,7 @@ for key in graph:
     node.append(key)
 print(node.index('USDT'))
 
-for i in range(5, 6):
+for i in range(3, 4):
     for j in range(len(node)):
         for k in range(len(node)):
             if j == k:
@@ -74,7 +76,6 @@ for i in range(5, 6):
                 eij = e_mat[node[i]][node[j]] / 1e8
                 ejk = e_mat[node[j]][node[k]] / 1e8
                 eki = e_mat[node[k]][node[i]] / 1e8
-                #print(eij* ejk* eki)
 
                 if eij * ejk * eki > 1.001 and get_min_vol(i, j, k, eij, ejk, eki) / 1e8 > 0.002:
                     print("uso")
