@@ -47,4 +47,5 @@ def calcStartTime():
     esttime, tick = bruteTime()
     return calcTickTime(esttime, 0.22, tick, 0.25, 30)
 
-    
+
+#print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
