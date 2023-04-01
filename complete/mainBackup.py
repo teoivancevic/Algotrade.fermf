@@ -14,16 +14,14 @@ import time
 
 
 user = "fermf"
-secret = "1349d0f368babe13344db67d0c815bbb"
-try:
-    response = api.register(user)
-    secret = response["secret"]
-    print(bcolors.OKCYAN + bcolors.BOLD + secret + bcolors.ENDC)
-except:
-    print("already have secret")
+secret = "2409877abc689bb3c40371f391000479"
 
-secret = "1349d0f368babe13344db67d0c815bbb"
-
+'''
+url = "http://192.168.1.101:3000"
+api = ApiService(url)
+secret = api.register(user)['secret']
+print(secret)
+'''
 
 isFirstRun = True
 tickLength = 3 # In seconds
