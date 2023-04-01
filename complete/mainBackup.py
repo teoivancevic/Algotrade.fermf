@@ -53,37 +53,7 @@ try:
     timeThread = CalcTimeThread()
     timeThread.start()
 
-    #subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
-
-    generateAllPairsJsonFile() # ToDo zamijenit s boljim nacinom
-    url = "http://192.168.1.101:3000"
-    api = ApiService(url)
-
-    pairsJson = api.getAllPairs()
-    #print(pairsJson)
-    print("a")
-    prettyJson = json.dumps(pairsJson, indent=4)# ovo je tocno
-    #print(prettyJson)
-
-    program_path = "./bellman"
-
-    cppFile = Popen([program_path], stdout=PIPE, stdin=PIPE)
-    
-    for line in prettyJson:
-        cppFile.stdin.write(line + '\n')
-
-    trades = cppFile.stdout.readline().strip().split("|")
-    #pritn(trades)
-    #print("test 3")
-    for trade in trades:
-
-        print("Trade: " + trade)
-
-    print("test 4")
-
-
-
-
+    subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
 
     timeThread.join()
 
@@ -93,11 +63,7 @@ try:
         timeThread2 = CalcTimeThread()
         timeThread2.start()
         
-        #subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
-        
-
-
-
+        subprocess.run(["python3", "graphSabolicV2.py"]) # backup sabolicev
         
         isFirstRun = False
         
