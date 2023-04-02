@@ -54,7 +54,7 @@ void print(__int128 x){
 }
 
 
-__int128_t min(__int128_t a, __int128_t b) {
+__int128 min(__int128 a, __int128 b) {
         if(a <= b) return a;
         else return b;
 }
@@ -147,8 +147,7 @@ ll update(){
 		cout << i << ' ';
 	}
 	cout << endl;*/
-	
-	__int128 max_ulog=get_min_vol(ms_e, ms_vol, cijeli_put);
+	__int128 max_ulog=min(get_min_vol(ms_e, ms_vol, cijeli_put), balance);
 //	cout << "max_ulog" << endl;
 	__int128 na_kraju=max_ulog;
 
