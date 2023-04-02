@@ -13,8 +13,8 @@ from Services.ApiService import ApiService
 import time
 
 
-user = "fermf_test1"
-secret = "8cc2e3aecd8d3b95f749f52902f65f5f"
+user = "fermf"
+secret = "c0d93a7a531b7d89b6d3a6ccbc3754d3"
 
 concurrentTradingThreads = 10
 
@@ -47,7 +47,8 @@ class FileThread(Thread):
         Thread.__init__(self)
         self.value = None
     def run(self):
-        subprocess.run(["python3", "graphSabolicV3.py", user, secret, json.dumps(data).replace(" ", "")])
+        subprocess.run(["python3", "graphSabolicV5.py", user, secret, json.dumps(data).replace(" ", "")])
+
 
 def printTickEnd():
     print(bcolors.OKCYAN + bcolors.BOLD + "Thread run done :)" + bcolors.ENDC)
@@ -66,6 +67,7 @@ for i in range(concurrentTradingThreads):
     thread = FileThread()
     threads.append(thread)
     thread.start()
+
 
 for thread in threads:
     thread.join()
