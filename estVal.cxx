@@ -8,7 +8,7 @@ const int inf=1e9;
 string const url = "http://192.168.1.101:3000";
 
 string const user = "fermf";
-string const secret = "b64f52091f316a1c27ce92ecb6fb3ebe5";
+string const secret = "64f52091f316a1c27ce92ecb6fb3ebe5";
 
 string const createTrade = "/createOrders/"+user+'/'+secret;
 
@@ -68,7 +68,7 @@ void bestDeals() {
       tmpx = tmpp;
       tmpp = parent[tmpx].first;
     }
-    ld dt = (value[a] * ((ld)closeVal[i]/1e8)) * bv;
+    ld dt = (value[a] * ((ld)closeVal[i]/1e8)) * value[b];
     ld pv = min(pathVolume[a], volume[i]/(value[b]));
 
     if (dt < 0.98 || value[a] <= 0) continue;
