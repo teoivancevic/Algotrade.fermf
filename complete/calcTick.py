@@ -2,6 +2,7 @@ import json
 from Services.ApiService import ApiService
 from datetime import datetime
 import time
+import sys
 
 url = "http://192.168.1.101:3000"
 _api = ApiService(url)
@@ -30,14 +31,15 @@ def bruteTime():
         time.sleep(0.22)
 
 
-def calcStartTime():
+def calcStartTime(tickLengthInSeconds):
     esttime, tick = bruteTime()
-    return calcTickTime(esttime, 0.22, tick, 0.25, 30) # ZA TESTIRANJE, TICK 30
+    #print(tickLengthInSeconds/(30*4), tickLengthInSeconds)
+    return calcTickTime(esttime, 0.22, tick, max(0.05, tickLengthInSeconds/(30*4)), tickLengthInSeconds) # ZA TESTIRANJE, TICK 30
     #return calcTickTime(esttime, 0.22, tick, 0.05, 3)
 
 
 if __name__ == "__main__":
-    print(calcStartTime())
+    print(calcStartTime(30))
 
 
 #print(datetime.fromtimestamp(calcTickTime(bruteTime(), 0.23, 0.005, 30)))
