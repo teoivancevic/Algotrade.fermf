@@ -61,13 +61,42 @@ __int128 min(__int128 a, __int128 b) {
 
 //typedef long long ll; 
 
-__int128 get_min_vol(__int128 **mat_e, __int128 **mat_vol, vector<int> idx) {
+vector < int > cijeli_put;
+__int128 **ms_e, **ms_vol;
+
+bool provjeri(__int128 poc){
+	for(int i=0; i<(int)cijeli_put.size()-1; i++){
+		poc*=ms_e[cijeli_put[i]][cijeli_put[i+1]];
+		poc/=1e8;
+		if(poc>ms_vol[cijeli_put[i]][cijeli_put[i+1]]){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+
+__int128 get_min_vol() {
+	__int128 lo=0, hi=balance, mid;
+	while(lo<hi){
+		mid=(lo+hi+1)/2;
+		if(provjeri(mid)){
+			lo=mid;
+		}
+		else{
+			hi=mid-1;
+		}
+	}
+	return lo;
+}
+
+/*__int128 get_min_vol(__int128 **mat_e, __int128 **mat_vol, vector<int> idx) {
 	int n = idx.size();
 	vector<__int128> vol;
 	vol.push_back(mat_vol[idx[0]][idx[1]]);
 //	cout << "pocinje " << endl;
 	for(int i = 1; i < n - 1; ++i) {
-//		print(mat_vol[idx[i]][idx[i + 1]]);
+		print(mat_vol[idx[i]][idx[i + 1]]);
 //		print(mat_e[idx[i]][idx[i + 1]]);
 		vol.push_back(min(mat_vol[idx[i]][idx[i + 1]], vol.back() * mat_e[idx[i]][idx[i + 1]] / 100000000));
 //		print(vol.back());
@@ -77,21 +106,21 @@ __int128 get_min_vol(__int128 **mat_e, __int128 **mat_vol, vector<int> idx) {
 	__int128 ret = vol[0];
 	__int128 div = 100000000;
 	for(int i = 0; i < n - 1; ++i) {
-//		cout << "ret" << endl;
-//		print(ret);
-//		cout << "div" << endl;
-//		print(div);
+		cout << "ret" << endl;
+		print(ret);
+		cout << "div" << endl;
+		print(div);
 		ret = min(ret, vol[i] / div * 100000000);
 		div = div * mat_e[idx[i]][idx[i + 1]] / 100000000;
 		
 	}
+	cout << "vracan " << endl;
+	print(ret);
 	return ret;
-}
+}*/
 
 vector < int > ms[maxn];
-__int128 **ms_e, **ms_vol;
 
-vector < int > cijeli_put;
 vector < __int128 > pare;
 
 ll update(){
@@ -147,8 +176,9 @@ ll update(){
 		cout << i << ' ';
 	}
 	cout << endl;*/
-	__int128 max_ulog=min(get_min_vol(ms_e, ms_vol, cijeli_put), balance);
-//	cout << "max_ulog" << endl;
+//	__int128 max_ulog=min(get_min_vol(ms_e, ms_vol, cijeli_put), balance);
+	__int128 max_ulog=min(get_min_vol(), balance);
+//	print(max_ulog);
 	__int128 na_kraju=max_ulog;
 
 
@@ -159,22 +189,31 @@ ll update(){
 		assert(provjeri<=ms_vol[cijeli_put[i]][cijeli_put[i+1]]);
 	}*/
 
+//	cout << "aha" << endl;
 	for(int i=0; i<cijeli_put.size()-1; i++){
 //		print(ms_vol[cijeli_put[i]][cijeli_put[i+1]]);
 		pare.push_back(max_ulog);
 		max_ulog*=ms_e[cijeli_put[i]][cijeli_put[i+1]];
 		max_ulog/=100000000;
+//		print(max_ulog);
+		assert(max_ulog<=ms_vol[cijeli_put[i]][cijeli_put[i+1]]);
 	}
 //	cout << "profit" << endl;
 //	print(max_ulog);
 //	print(na_kraju);
-
-	return (na_kraju-max_ulog);
+//	cerr << (ll)(max_ulog-na_kraju) << endl;
+	return (max_ulog-na_kraju);
 }
 
 
 bool cmp(int a, int b){
 	return (double)volume[a]/close[a]>(double)volume[b]/close[b];
+}
+
+const double epsilon=0.0000001;
+
+bool jednako(double a, double b){
+	return fabs(a-b)<epsilon;
 }
 
 bool bellman_ford(int x){
@@ -190,7 +229,7 @@ bool bellman_ford(int x){
 	dist[x]=0;
 	for(int i=0; i<n; i++){
 		for(int j : red){
-			if(dist[edge[j].first]+weight[j]<dist[edge[j].second]){
+			if(!jednako(dist[edge[j].first]+weight[j], dist[edge[j].second]) && dist[edge[j].first]+weight[j]<dist[edge[j].second]){
 				anc[edge[j].second]={edge[j].first, j};
 				dist[edge[j].second]=dist[edge[j].first]+weight[j];
 			}
@@ -214,6 +253,7 @@ bool bellman_ford(int x){
 		cik_edge.push_back(anc[x].second);
 		x=anc[x].first;
 	}
+	reverse(ciklus.begin(), ciklus.end());
 /*	cout << "nasao cilus!\n";
 	for(int i : ciklus){
 		cout << i << ' ';
@@ -225,6 +265,9 @@ bool bellman_ford(int x){
 string rev[maxn];
 
 int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 	srand(time(NULL));
 	ms_vol=new __int128*[maxn];
 	ms_e=new __int128*[maxn];
@@ -232,12 +275,15 @@ int main(){
 		ms_vol[i]=new __int128[maxn];
 		ms_e[i]=new __int128[maxn];
 	}
-	balance=1000;
-	balance*=100000000;
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
 	string s;
+	getline(cin, s);
+	balance=0;
+	int br1=0;
+	while(br1<(int)s.size() && s[br1]>='0' && s[br1]<='9'){
+		balance*=10;
+		balance+=s[br1]-'0';
+		br1++;
+	}
 	getline(cin, s);
 	int br;
 	string s1, s2;
@@ -324,7 +370,8 @@ int main(){
 			ms_e[x1][x2]=val;
 			edge.push_back({x1, x2});
 			close.push_back(val);
-			weight.push_back(-log(val/1e8));
+			weight.push_back(-log((double)val/1e8));
+//			cout << s1 << ' ' << s2 << ' ' << weight.back() << endl;
 		}
 	}
 	pocetak=ind["USDT"];
