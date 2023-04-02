@@ -90,7 +90,7 @@ for i in range(3, 4):
                     print('vol: ', trade_vol / 1e8)
 
                     trade_vol = int(trade_vol)
-                    print('bal: ', api.balance(user)['USDT'] / 1e8, 'est_new_bal: ', trade_vol / 1e8 * eij * ejk * eki) 
+                    #print('bal: ', api.balance(user)['USDT'] / 1e8, 'est_new_bal: ', trade_vol / 1e8 * eij * ejk * eki) 
                     #print('trade_vol_nacpo[cetaku', trade_vol, vol_mat[node[i]][node[j]])
 
                     url = node[i] + ',' + node[j] + ',' + str(trade_vol)
