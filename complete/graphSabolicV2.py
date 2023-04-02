@@ -1,11 +1,12 @@
 import sys
+import json
 
 from Services.ApiService import ApiService
 from Services.bcolors import bcolors
 
 api = ApiService('http://192.168.1.101:3000')
 
-data = api.getAllPairs()
+#data = api.getAllPairs()
 graph = {}
 node = []
 vol_graph = {}
@@ -14,6 +15,7 @@ e_mat = {}
 
 user = sys.argv[1]
 secret = sys.argv[2]
+data = json.loads(sys.argv[3])
 
 
 def find(i, j):
@@ -63,7 +65,7 @@ for key in graph:
     node.append(key)
 print(node.index('USDT'))
 
-for i in range(3, 4):
+for i in range(node.index('USDT'), node.index('USDT') + 1):
     for j in range(len(node)):
         for k in range(len(node)):
             if j == k:
