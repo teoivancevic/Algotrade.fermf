@@ -32,8 +32,8 @@ def bruteTime():
 
 def calcStartTime():
     esttime, tick = bruteTime()
-    #return calcTickTime(esttime, 0.22, tick, 0.25, 30) # ZA TESTIRANJE, TICK 30
-    return calcTickTime(esttime, 0.22, tick, 0.05, 3)
+    return calcTickTime(esttime, 0.22, tick, 0.25, 30) # ZA TESTIRANJE, TICK 30
+    #return calcTickTime(esttime, 0.22, tick, 0.05, 3)
 
 
 if __name__ == "__main__":
