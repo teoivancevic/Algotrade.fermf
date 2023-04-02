@@ -12,3 +12,6 @@ def generateAllPairsJsonFile():
 
     #print("Done")
 
+
+if __name__ == "__main__":
+    generateAllPairsJsonFile()
