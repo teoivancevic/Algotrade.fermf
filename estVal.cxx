@@ -68,8 +68,8 @@ void bestDeals() {
       tmpx = tmpp;
       tmpp = parent[tmpx].first;
     }
-    ld dt = (value[a] * ((ld)closeVal[i]/1e8)) * value[b];
-    ld pv = min(pathVolume[a], volume[i]/(value[b]));
+    ld dt = (value[a] * ((ld)closeVal[i]/1e8)) * bv;
+    ld pv = min(pathVolume[a], volume[i]/(value[a] * (ld)closeVal[i]/1e8));
 
     if (dt < 0.98 || value[a] <= 0) continue;
     ld cr = value[a] * ((ld)closeVal[i]/1e8);
@@ -82,6 +82,7 @@ void bestDeals() {
         xc = xp;
         xp = parent[xc].first;
     }
+    if (pv <= 0) continue;
 //    cerr << dt - value[ind["USDT"]] << ' ' << pv << endl;
     v.emplace_back((dt - value[ind["USDT"]]) * pv, pair{i, pv});
   }
@@ -104,7 +105,7 @@ void bestDeals() {
     b = parent[b].first;
   }
   pth.push_back(pth[0]);
-  __int128 pv = (v[x].second.second * 2./4.);
+  __int128 pv = (v[x].second.second * 3./4.);
   string req = "";
   vector<string> tmp;
   for (auto a : pth) {
