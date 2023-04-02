@@ -133,13 +133,7 @@ while True:
     response = api.createOrders(user, secret, trades)
     print("Trades: " + trades)
     print(str(response))
-    '''
-    for trade in trades:
-        response = api.createOrders(user, secret, trade)
-        print("Trade: " + trade)
-        print(str(response))
-        print()
-        '''
+
     # Vito file end
 
     printBalanceUSDT()
@@ -154,6 +148,4 @@ while True:
     
 
 #except:
-print("error")
-
-#print(calcStartTime())
+#print("error")

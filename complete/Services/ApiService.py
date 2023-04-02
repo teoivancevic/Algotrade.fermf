@@ -1,4 +1,5 @@
 import requests
+import time
 
 
 class ApiService:
@@ -40,6 +41,11 @@ class ApiService:
     
     def balance(self, user):
         response = requests.get(self.url + "/balance/" + user)
+        
+        while(response.status_code == 429):
+            time.sleep(0.01)
+            response = requests.get(self.url + "/balance/" + user)
+        
         return response.json()
 
     def index(self):
